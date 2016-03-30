@@ -1,6 +1,5 @@
 package de.goeuro.useCase;
 
-import de.goeuro.connection.GoEuroGateway;
 import de.goeuro.domain.Suggestion;
 
 import java.util.List;

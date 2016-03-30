@@ -7,7 +7,7 @@ import static org.junit.Assert.*;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
-public class GoEuroGatewayShould {
+public class GoEuroGatewayImplShould {
 
     @Mock
     GoEuroConnection connectionMock;

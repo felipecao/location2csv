@@ -1,4 +1,4 @@
-package de.goeuro.connection;
+package de.goeuro.useCase;
 
 import de.goeuro.domain.Suggestion;
 
