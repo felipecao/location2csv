@@ -76,6 +76,30 @@ public class RetrieveSuggestionsForInputShould {
         assertEquals(expectedSuggestions, returnedSuggestions);
     }
 
+    @Test
+    public void return_an_empty_list_of_suggestions_if_input_is_null() {
+        Integer totalExpectedSuggestions = new Random().nextInt(10);
+        List<Suggestion> expectedSuggestions = mockSuggestions(totalExpectedSuggestions, "name");
+        when(gatewayMock.retrieveSuggestionsForCity(anyString())).thenReturn(expectedSuggestions);
+
+        List<Suggestion> returnedSuggestions = useCase.invoke(null);
+
+        assertNotNull(returnedSuggestions);
+        assertTrue(returnedSuggestions.isEmpty());
+    }
+
+    @Test
+    public void return_an_empty_list_of_suggestions_if_input_is_blank() {
+        Integer totalExpectedSuggestions = new Random().nextInt(10);
+        List<Suggestion> expectedSuggestions = mockSuggestions(totalExpectedSuggestions, "name");
+        when(gatewayMock.retrieveSuggestionsForCity(anyString())).thenReturn(expectedSuggestions);
+
+        List<Suggestion> returnedSuggestions = useCase.invoke("    ");
+
+        assertNotNull(returnedSuggestions);
+        assertTrue(returnedSuggestions.isEmpty());
+    }
+
     private List<Suggestion> mockSuggestions(Integer times, String name) {
         List<Suggestion> suggestions = new ArrayList<>();
 
