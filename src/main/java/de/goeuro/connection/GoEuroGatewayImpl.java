@@ -1,6 +1,6 @@
 package de.goeuro.connection;
 
-import de.goeuro.domain.Suggestion;
+import de.goeuro.entity.Suggestion;
 import de.goeuro.useCase.GoEuroGateway;
 
 import java.util.ArrayList;

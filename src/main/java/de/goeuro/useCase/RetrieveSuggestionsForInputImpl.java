@@ -1,7 +1,7 @@
 package de.goeuro.useCase;
 
 import de.goeuro.RetrieveSuggestionsForInput;
-import de.goeuro.domain.Suggestion;
+import de.goeuro.entity.Suggestion;
 
 import java.util.ArrayList;
 import java.util.List;

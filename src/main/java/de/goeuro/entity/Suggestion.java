@@ -1,4 +1,4 @@
-package de.goeuro.domain;
+package de.goeuro.entity;
 
 import java.math.BigDecimal;
 

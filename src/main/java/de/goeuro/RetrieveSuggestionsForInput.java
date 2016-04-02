@@ -1,6 +1,6 @@
 package de.goeuro;
 
-import de.goeuro.domain.Suggestion;
+import de.goeuro.entity.Suggestion;
 
 import java.util.List;
 

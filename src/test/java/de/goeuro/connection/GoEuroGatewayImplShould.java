@@ -1,6 +1,6 @@
 package de.goeuro.connection;
 
-import de.goeuro.domain.Suggestion;
+import de.goeuro.entity.Suggestion;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
