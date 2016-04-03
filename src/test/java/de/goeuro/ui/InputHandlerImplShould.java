@@ -13,12 +13,11 @@ import org.mockito.MockitoAnnotations;
 
 import java.io.PrintStream;
 
+import static de.goeuro.TestConstants.CITY;
 import static org.mockito.Mockito.*;
 
 @RunWith(DataProviderRunner.class)
 public class InputHandlerImplShould {
-
-    private static final String CITY = "city";
 
     @Mock
     CsvPresenter csvPresenterMock;

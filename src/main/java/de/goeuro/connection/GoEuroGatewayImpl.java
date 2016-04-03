@@ -13,7 +13,7 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
 
 public class GoEuroGatewayImpl implements GoEuroGateway {
 
-    GoEuroConnection connection;
+    private GoEuroConnection connection;
 
     public GoEuroGatewayImpl(GoEuroConnection connection) {
         this.connection = connection;

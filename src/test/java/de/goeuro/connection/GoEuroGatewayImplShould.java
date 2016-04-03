@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static de.goeuro.TestConstants.CITY;
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
@@ -29,7 +30,7 @@ public class GoEuroGatewayImplShould {
     public void return_an_empty_list_of_suggestions_if_connection_provides_no_results() {
         when(connectionMock.retrieveSuggestionsForCity(anyString())).thenReturn(new ArrayList<Map>());
 
-        List<Suggestion> suggestions = gateway.retrieveSuggestionsForCity("city");
+        List<Suggestion> suggestions = gateway.retrieveSuggestionsForCity(CITY);
 
         assertNotNull(suggestions);
         assertEquals(new ArrayList<SuggestionImpl>(), suggestions);

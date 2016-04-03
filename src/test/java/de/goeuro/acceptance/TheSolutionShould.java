@@ -69,6 +69,7 @@ public class TheSolutionShould {
     @Test
     public void create_a_csv_file_with_a_header_and_8_rows_for_Berlin_and_display_success_message() throws IOException {
         inputHandler.fireCsvCreation(new String[]{BERLIN});
+
         File outputFile = new File(InputHandlerImpl.OUTPUT_FILE_NAME);
         List<String> outputFileContents = Files.readAllLines(Paths.get(InputHandlerImpl.OUTPUT_FILE_NAME));
 
@@ -90,6 +91,7 @@ public class TheSolutionShould {
     @Test
     public void display_a_message_saying_no_results_were_found() throws IOException {
         inputHandler.fireCsvCreation(new String[]{INPUT_THAT_GIVES_NO_RESULTS});
+
         File outputFile = new File(InputHandlerImpl.OUTPUT_FILE_NAME);
 
         assertFalse(outputFile.exists());

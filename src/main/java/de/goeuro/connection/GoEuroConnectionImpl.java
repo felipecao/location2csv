@@ -6,9 +6,6 @@ import java.util.Map;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
-/**
- * Created by felipe on 4/2/16.
- */
 public class GoEuroConnectionImpl implements GoEuroConnection {
 
     private static final String BASE_URL = "http://api.goeuro.com/api/v2/position/suggest/en/%s";

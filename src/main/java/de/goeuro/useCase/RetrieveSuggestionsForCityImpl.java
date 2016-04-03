@@ -8,9 +8,6 @@ import java.util.List;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
-/**
- * Created by felipe on 3/30/16.
- */
 public class RetrieveSuggestionsForCityImpl implements RetrieveSuggestionsForCity {
 
     GoEuroGateway gateway;

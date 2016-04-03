@@ -9,6 +9,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.*;
 
+import static de.goeuro.TestConstants.CITY;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
@@ -16,7 +17,7 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class GoEuroConnectionImplShould {
 
-    List<Map> resultsFromHttpService;
+    List<Map> resultsFromHttpConnection;
 
     @Mock
     HttpConnection httpConnectionMock;
@@ -27,26 +28,26 @@ public class GoEuroConnectionImplShould {
     @Before
     public void setup() {
         Integer totalEntriesToMock = new Random().nextInt(50);
-        resultsFromHttpService = new ArrayList<>();
+        resultsFromHttpConnection = new ArrayList<>();
 
         for(int i = 0; i < totalEntriesToMock; i++) {
-            resultsFromHttpService.add(setupEntryWithRandomData());
+            resultsFromHttpConnection.add(setupEntryWithRandomData());
         }
     }
 
     @Test
-    public void invoke_http_service_and_return_its_results() {
+    public void invoke_http_connection_and_return_its_results() {
         String url = "http://api.goeuro.com/api/v2/position/suggest/en/city";
-        when(httpConnectionMock.executeGet(url)).thenReturn(resultsFromHttpService);
+        when(httpConnectionMock.executeGet(url)).thenReturn(resultsFromHttpConnection);
 
-        List<Map> searchResults = goEuroConnection.retrieveSuggestionsForCity("city");
+        List<Map> searchResults = goEuroConnection.retrieveSuggestionsForCity(CITY);
 
-        assertEquals(resultsFromHttpService, searchResults);
+        assertEquals(resultsFromHttpConnection, searchResults);
     }
 
     @Test
     public void return_an_empty_result_if_city_is_null() {
-        when(httpConnectionMock.executeGet(anyString())).thenReturn(resultsFromHttpService);
+        when(httpConnectionMock.executeGet(anyString())).thenReturn(resultsFromHttpConnection);
 
         List<Map> searchResults = goEuroConnection.retrieveSuggestionsForCity(null);
 
@@ -55,7 +56,7 @@ public class GoEuroConnectionImplShould {
 
     @Test
     public void return_an_empty_result_if_city_is_blank() {
-        when(httpConnectionMock.executeGet(anyString())).thenReturn(resultsFromHttpService);
+        when(httpConnectionMock.executeGet(anyString())).thenReturn(resultsFromHttpConnection);
 
         List<Map> searchResults = goEuroConnection.retrieveSuggestionsForCity("     ");
 
