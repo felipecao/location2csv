@@ -1,39 +1,16 @@
 package de.goeuro.entity;
 
-import java.math.BigDecimal;
+/**
+ * Represents a suggestion provided by GoEuro API for a given city used as input on a search.
+ *
+ * This is an implementation of the "entities" layer defined by Robert C. Martin
+ * in https://blog.8thlight.com/uncle-bob/2012/08/13/the-clean-architecture.html
+ */
+public interface Suggestion {
 
-public class Suggestion {
-
-    private String id;
-    private String name;
-    private String type;
-    private BigDecimal latitude;
-    private BigDecimal longitude;
-
-    public Suggestion() {
-    }
-
-    public Suggestion(String name) {
-        this.name = name;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public BigDecimal getLatitude() {
-        return latitude;
-    }
-
-    public BigDecimal getLongitude() {
-        return longitude;
-    }
+    Long getId();
+    String getName();
+    String getType();
+    Double getLatitude();
+    Double getLongitude();
 }

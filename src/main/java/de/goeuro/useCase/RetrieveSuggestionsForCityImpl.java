@@ -1,7 +1,7 @@
 package de.goeuro.useCase;
 
-import de.goeuro.RetrieveSuggestionsForInput;
 import de.goeuro.entity.Suggestion;
+import de.goeuro.presenter.RetrieveSuggestionsForCity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,19 +11,19 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
 /**
  * Created by felipe on 3/30/16.
  */
-class RetrieveSuggestionsForInputImpl implements RetrieveSuggestionsForInput {
+public class RetrieveSuggestionsForCityImpl implements RetrieveSuggestionsForCity {
 
     GoEuroGateway gateway;
 
-    public RetrieveSuggestionsForInputImpl(GoEuroGateway gateway) {
+    public RetrieveSuggestionsForCityImpl(GoEuroGateway gateway) {
         this.gateway = gateway;
     }
 
     @Override
-    public List<Suggestion> invoke(String input) {
-        if(isBlank(input)) {
+    public List<Suggestion> fetch(String city) {
+        if(isBlank(city)) {
             return new ArrayList<>();
         }
-        return gateway.retrieveSuggestionsForCity(input);
+        return gateway.retrieveSuggestionsForCity(city);
     }
 }
