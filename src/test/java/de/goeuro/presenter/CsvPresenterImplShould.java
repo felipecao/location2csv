@@ -26,14 +26,14 @@ public class CsvPresenterImplShould {
     private static final String EXPECTED_OUTPUT_FILE_NAME = "presenter_suggestions.csv";
 
     @Mock
-    RetrieveSuggestionsForCity retrieveSuggestionsForCity;
+    ExportSuggestionsToCsv exportSuggestionsToCsv;
 
     CsvPresenterImpl csvPresenter;
 
     @Before
     public void setup() {
         deleteOutputFileFromPreviousRun();
-        csvPresenter = new CsvPresenterImpl(retrieveSuggestionsForCity, EXPECTED_OUTPUT_FILE_NAME);
+        csvPresenter = new CsvPresenterImpl(exportSuggestionsToCsv, EXPECTED_OUTPUT_FILE_NAME);
     }
 
     private void deleteOutputFileFromPreviousRun() {
@@ -46,7 +46,7 @@ public class CsvPresenterImplShould {
 
     @Test(expected = NoSuggestionsException.class)
     public void throw_an_exception_if_no_suggestions_are_returned() throws IOException {
-        when(retrieveSuggestionsForCity.fetch(CITY)).thenThrow(NoSuggestionsException.class);
+        when(exportSuggestionsToCsv.fetch(CITY)).thenThrow(NoSuggestionsException.class);
 
         csvPresenter.createCSVFileWithSuggestionsFromAPI(CITY);
     }
@@ -54,7 +54,7 @@ public class CsvPresenterImplShould {
     @Test
     public void create_a_csv_with_1_content_line_from_a_response_with_1_entry() throws IOException {
         List<Suggestion> suggestions = oneSuggestion();
-        when(retrieveSuggestionsForCity.fetch(CITY)).thenReturn(suggestions);
+        when(exportSuggestionsToCsv.fetch(CITY)).thenReturn(suggestions);
 
         csvPresenter.createCSVFileWithSuggestionsFromAPI(CITY);
         Path outputFile = Paths.get(EXPECTED_OUTPUT_FILE_NAME);
@@ -72,7 +72,7 @@ public class CsvPresenterImplShould {
     @Test
     public void create_a_csv_with_4_content_lines_from_a_response_with_4_entries() throws IOException {
         List<Suggestion> suggestions = fourSuggestions();
-        when(retrieveSuggestionsForCity.fetch(CITY)).thenReturn(suggestions);
+        when(exportSuggestionsToCsv.fetch(CITY)).thenReturn(suggestions);
 
         csvPresenter.createCSVFileWithSuggestionsFromAPI(CITY);
         Path outputFile = Paths.get(EXPECTED_OUTPUT_FILE_NAME);

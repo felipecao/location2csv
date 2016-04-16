@@ -35,7 +35,7 @@ public class HttpConnectionImplShould {
         assertTrue(names.contains("Berlin Tegel"));
         assertTrue(names.contains("Berlin Schönefeld"));
         assertTrue(names.contains("Berlin Hbf"));
-        assertTrue(names.contains("Berlin Ostbahnhof"));
+        assertTrue(names.contains("Berlin Spandau"));
     }
 
     @Test

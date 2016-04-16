@@ -5,7 +5,7 @@ import de.goeuro.connection.GoEuroGatewayImpl;
 import de.goeuro.connection.HttpConnectionImpl;
 import de.goeuro.presenter.CsvPresenterImpl;
 import de.goeuro.ui.InputHandlerImpl;
-import de.goeuro.useCase.RetrieveSuggestionsForCityImpl;
+import de.goeuro.useCase.ExportSuggestionsToCsvImpl;
 
 public class Main {
 
@@ -25,7 +25,7 @@ public class Main {
     private InputHandler setupInputHandler() {
         return new InputHandlerImpl(
                 new CsvPresenterImpl(
-                        new RetrieveSuggestionsForCityImpl(
+                        new ExportSuggestionsToCsvImpl(
                                 new GoEuroGatewayImpl(
                                         new GoEuroConnectionImpl(
                                                 new HttpConnectionImpl()

@@ -6,7 +6,7 @@ import de.goeuro.connection.HttpConnectionImpl;
 import de.goeuro.presenter.CsvPresenterImpl;
 import de.goeuro.ui.CommandLineOutputMessages;
 import de.goeuro.ui.InputHandlerImpl;
-import de.goeuro.useCase.RetrieveSuggestionsForCityImpl;
+import de.goeuro.useCase.ExportSuggestionsToCsvImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -54,7 +54,7 @@ public class TheSolutionShould {
     private void setupDependenciesForSolutionEntryPoint() {
         inputHandler = new InputHandlerImpl(
                 new CsvPresenterImpl(
-                        new RetrieveSuggestionsForCityImpl(
+                        new ExportSuggestionsToCsvImpl(
                                 new GoEuroGatewayImpl(
                                         new GoEuroConnectionImpl(
                                                 new HttpConnectionImpl()
@@ -83,7 +83,7 @@ public class TheSolutionShould {
         assertTrue(outputFileContents.contains("314826,Berlin Tegel,airport,52.5548,13.28903,"));
         assertTrue(outputFileContents.contains("314827,Berlin Schönefeld,airport,52.3887261,13.5180874,"));
         assertTrue(outputFileContents.contains("334196,Berlin Hbf,station,52.525589,13.369548,"));
-        assertTrue(outputFileContents.contains("333977,Berlin Ostbahnhof,station,52.510972,13.434567,"));
+        assertTrue(outputFileContents.contains("334098,Berlin Spandau,station,52.53447,13.19753,"));
 
         verify(printStreamMock, times(1)).println(CommandLineOutputMessages.SEARCH_FOUND_RESULTS);
     }

@@ -11,7 +11,7 @@ import java.util.List;
  * This is an implementation of the "use cases" layer defined by Robert C. Martin
  * in https://blog.8thlight.com/uncle-bob/2012/08/13/the-clean-architecture.html
  */
-public interface RetrieveSuggestionsForCity {
+public interface ExportSuggestionsToCsv {
 
     /**
      * Executes the retrieval of suggestions for the {@param city} provided as input.

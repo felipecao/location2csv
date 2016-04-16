@@ -1,18 +1,18 @@
 package de.goeuro.useCase;
 
 import de.goeuro.entity.Suggestion;
-import de.goeuro.presenter.RetrieveSuggestionsForCity;
+import de.goeuro.presenter.ExportSuggestionsToCsv;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
-public class RetrieveSuggestionsForCityImpl implements RetrieveSuggestionsForCity {
+public class ExportSuggestionsToCsvImpl implements ExportSuggestionsToCsv {
 
     GoEuroGateway gateway;
 
-    public RetrieveSuggestionsForCityImpl(GoEuroGateway gateway) {
+    public ExportSuggestionsToCsvImpl(GoEuroGateway gateway) {
         this.gateway = gateway;
     }
 

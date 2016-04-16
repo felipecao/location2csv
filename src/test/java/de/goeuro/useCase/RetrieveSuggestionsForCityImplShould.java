@@ -26,7 +26,7 @@ public class RetrieveSuggestionsForCityImplShould {
     GoEuroGateway gatewayMock;
 
     @InjectMocks
-    RetrieveSuggestionsForCityImpl useCase;
+    ExportSuggestionsToCsvImpl useCase;
 
     @Test
     public void return_an_empty_list_of_suggestions_if_input_is_null() {

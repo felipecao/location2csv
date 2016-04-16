@@ -14,10 +14,10 @@ public class CsvPresenterImpl implements CsvPresenter {
     private static final String NEW_LINE = "\n";
     private static final List<String> CSV_HEADERS = Arrays.asList("_id", "name", "type", "latitude", "longitude");
 
-    private RetrieveSuggestionsForCity suggestionsForCity;
+    private ExportSuggestionsToCsv suggestionsForCity;
     private String outputFileName;
 
-    public CsvPresenterImpl(RetrieveSuggestionsForCity suggestionsForCity, String outputFileName) {
+    public CsvPresenterImpl(ExportSuggestionsToCsv suggestionsForCity, String outputFileName) {
         this.suggestionsForCity = suggestionsForCity;
         this.outputFileName = outputFileName;
     }
