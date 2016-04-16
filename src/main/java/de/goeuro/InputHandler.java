@@ -7,5 +7,13 @@ package de.goeuro;
  * in https://blog.8thlight.com/uncle-bob/2012/08/13/the-clean-architecture.html
  */
 public interface InputHandler {
+
+    @Deprecated
     void fireCsvCreation(String[] args);
+
+    Boolean isInputValid();
+    void presentErrorMessage();
+    void presentSuccessMessage();
+    void presentNoResultsMessage();
+    String extractCity();
 }

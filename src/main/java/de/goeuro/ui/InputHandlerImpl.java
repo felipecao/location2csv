@@ -7,6 +7,7 @@ import de.goeuro.presenter.NoSuggestionsException;
 import java.io.PrintStream;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 public class InputHandlerImpl implements InputHandler {
 
@@ -14,9 +15,16 @@ public class InputHandlerImpl implements InputHandler {
 
     private CsvPresenter csvPresenter;
     private PrintStream out;
+    private String[] args;
 
+    @Deprecated
     public InputHandlerImpl(CsvPresenter csvPresenter, PrintStream out) {
         this.csvPresenter = csvPresenter;
+        this.out = out;
+    }
+
+    public InputHandlerImpl(String[] args, PrintStream out) {
+        this.args = args;
         this.out = out;
     }
 
@@ -41,6 +49,35 @@ public class InputHandlerImpl implements InputHandler {
         }
 
         out.println(CommandLineOutputMessages.SEARCH_FOUND_RESULTS);
+    }
+
+    @Override
+    public Boolean isInputValid() {
+        return (args.length > 0) && (isNotBlank(args[0]));
+    }
+
+    @Override
+    public void presentErrorMessage() {
+        out.println(CommandLineOutputMessages.CITY_NOT_PROVIDED_BY_USER);
+    }
+
+    @Override
+    public void presentSuccessMessage() {
+        out.println(CommandLineOutputMessages.SEARCH_FOUND_RESULTS);
+    }
+
+    @Override
+    public void presentNoResultsMessage() {
+        out.println(CommandLineOutputMessages.SEARCH_DID_NOT_FIND_ANY_RESULTS);
+    }
+
+    @Override
+    public String extractCity() {
+        if (!isInputValid()) { {
+            return null;
+        }}
+
+        return args[0];
     }
 
     private Boolean searchHasResults(String city) {
