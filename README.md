@@ -27,7 +27,7 @@ small incremental steps for every method in every class. Please notice there are
 
 * `HttpConnectionImplShould`: this class performs integration contract tests, which perform actual HTTP calls to GoEuro API. The definition of 
 such test type are much better described by Martin Fowler at http://martinfowler.com/bliki/IntegrationContractTest.html .
-* `TheSolutionShould`: this class automates the execution of the acceptance tests defined in this READMe file. It will simulate user input 
+* `TheSolutionShould`: this class automates the execution of the acceptance tests defined below in this README file. It will simulate user input 
 and go through all layers and classes, make an HTTP call to GoEuro API and output results to a CSV file. 
 My initial intention was to use (Cucumber)[https://cucumber.io/] for such a purpose, but after struggling with is setup for Java 8 
 for a couple of hours, I decided to move on and stick to good old JUnit due to time constraints.
