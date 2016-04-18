@@ -1,54 +1,21 @@
 package de.goeuro.ui;
 
-import de.goeuro.InputHandler;
-import de.goeuro.presenter.CsvPresenter;
-import de.goeuro.presenter.NoSuggestionsException;
+import de.goeuro.useCase.InputHandler;
 
 import java.io.PrintStream;
 
-import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 public class InputHandlerImpl implements InputHandler {
 
-    public static final String OUTPUT_FILE_NAME = "suggestions.csv";
-
-    private CsvPresenter csvPresenter;
     private PrintStream out;
     private String[] args;
+    private String outputFileName;
 
-    @Deprecated
-    public InputHandlerImpl(CsvPresenter csvPresenter, PrintStream out) {
-        this.csvPresenter = csvPresenter;
-        this.out = out;
-    }
-
-    public InputHandlerImpl(String[] args, PrintStream out) {
+    public InputHandlerImpl(String[] args, PrintStream out, String outputFileName) {
         this.args = args;
         this.out = out;
-    }
-
-    @Override
-    public void fireCsvCreation(String[] args) {
-
-        if (args.length == 0) {
-            out.println(CommandLineOutputMessages.CITY_NOT_PROVIDED_BY_USER);
-            return;
-        }
-
-        String city = args[0];
-
-        if (isBlank(city)) {
-            out.println(CommandLineOutputMessages.CITY_NOT_PROVIDED_BY_USER);
-            return;
-        }
-
-        if(!searchHasResults(city)) {
-            out.println(CommandLineOutputMessages.SEARCH_DID_NOT_FIND_ANY_RESULTS);
-            return;
-        }
-
-        out.println(CommandLineOutputMessages.SEARCH_FOUND_RESULTS);
+        this.outputFileName = outputFileName;
     }
 
     @Override
@@ -57,13 +24,13 @@ public class InputHandlerImpl implements InputHandler {
     }
 
     @Override
-    public void presentErrorMessage() {
+    public void presentInputNotProvidedMessage() {
         out.println(CommandLineOutputMessages.CITY_NOT_PROVIDED_BY_USER);
     }
 
     @Override
     public void presentSuccessMessage() {
-        out.println(CommandLineOutputMessages.SEARCH_FOUND_RESULTS);
+        out.println(String.format(CommandLineOutputMessages.SEARCH_FOUND_RESULTS_PATTERN, outputFileName));
     }
 
     @Override
@@ -78,15 +45,5 @@ public class InputHandlerImpl implements InputHandler {
         }}
 
         return args[0];
-    }
-
-    private Boolean searchHasResults(String city) {
-        try {
-            csvPresenter.createCSVFileWithSuggestionsFromAPI(city);
-            return Boolean.TRUE;
-        }
-        catch (NoSuggestionsException e) {
-            return Boolean.FALSE;
-        }
     }
 }

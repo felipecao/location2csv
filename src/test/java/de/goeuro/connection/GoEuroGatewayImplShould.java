@@ -133,9 +133,27 @@ public class GoEuroGatewayImplShould {
         List<SuggestionImpl> suggestions = new ArrayList<>();
 
         for(int i = 0; i < totalSuggestions; i++) {
-            suggestions.add(new SuggestionImpl(376217D, "Berlin " + i, "location", 52.52437, 13.41053));
+            suggestions.add(
+                    SuggestionImpl.fromMap(
+                            suggestionWith(376217D, "Berlin " + i, "location", 52.52437, 13.41053)
+                    )
+            );
         }
 
         return suggestions;
+    }
+
+    private Map<String, Object> suggestionWith(Double id, String name, String type, Double latitude, Double longitude) {
+        Map<String, Object> suggestionInfo = new HashMap<>();
+
+        suggestionInfo.put("_id", id);
+        suggestionInfo.put("name", name);
+        suggestionInfo.put("type", type);
+        suggestionInfo.put("geo_position", new HashMap<String, Double>(){{
+            put("latitude", latitude);
+            put("longitude", longitude);
+        }});
+
+        return suggestionInfo;
     }
 }

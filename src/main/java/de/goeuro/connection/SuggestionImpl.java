@@ -3,6 +3,7 @@ package de.goeuro.connection;
 import de.goeuro.entity.Suggestion;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.Map;
 
@@ -14,7 +15,7 @@ class SuggestionImpl implements Suggestion {
     private Double latitude;
     private Double longitude;
 
-    SuggestionImpl(Double id, String name, String type, Double latitude, Double longitude) {
+    private SuggestionImpl(Double id, String name, String type, Double latitude, Double longitude) {
         this.id = (null != id) ? id.longValue() : null;
         this.name = name;
         this.type = type;
@@ -92,4 +93,14 @@ class SuggestionImpl implements Suggestion {
                 .toHashCode();
     }
 
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append(this.id)
+                .append(this.name)
+                .append(this.type)
+                .append(this.latitude)
+                .append(this.longitude)
+                .toString();
+    }
 }

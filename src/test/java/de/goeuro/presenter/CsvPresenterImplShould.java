@@ -1,5 +1,6 @@
 package de.goeuro.presenter;
 
+import de.goeuro.ExportSuggestionsToCsv;
 import de.goeuro.entity.Suggestion;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,10 +13,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import static de.goeuro.TestConstants.CITY;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -33,7 +34,7 @@ public class CsvPresenterImplShould {
     @Before
     public void setup() {
         deleteOutputFileFromPreviousRun();
-        csvPresenter = new CsvPresenterImpl(exportSuggestionsToCsv, EXPECTED_OUTPUT_FILE_NAME);
+        csvPresenter = new CsvPresenterImpl(EXPECTED_OUTPUT_FILE_NAME);
     }
 
     private void deleteOutputFileFromPreviousRun() {
@@ -44,19 +45,28 @@ public class CsvPresenterImplShould {
         }
     }
 
-    @Test(expected = NoSuggestionsException.class)
-    public void throw_an_exception_if_no_suggestions_are_returned() throws IOException {
-        when(exportSuggestionsToCsv.fetch(CITY)).thenThrow(NoSuggestionsException.class);
+    @Test
+    public void not_generate_a_csv_if_input_is_null() throws IOException {
+        csvPresenter.exportSuggestions(null);
 
-        csvPresenter.createCSVFileWithSuggestionsFromAPI(CITY);
+        Path outputFile = Paths.get(EXPECTED_OUTPUT_FILE_NAME);
+        assertFalse(outputFile.toFile().exists());
     }
 
     @Test
-    public void create_a_csv_with_1_content_line_from_a_response_with_1_entry() throws IOException {
-        List<Suggestion> suggestions = oneSuggestion();
-        when(exportSuggestionsToCsv.fetch(CITY)).thenReturn(suggestions);
+    public void not_generate_a_csv_if_input_is_empty() throws IOException {
+        csvPresenter.exportSuggestions(new ArrayList<>());
 
-        csvPresenter.createCSVFileWithSuggestionsFromAPI(CITY);
+        Path outputFile = Paths.get(EXPECTED_OUTPUT_FILE_NAME);
+        assertFalse(outputFile.toFile().exists());
+    }
+
+    @Test
+    public void generate_a_csv_with_1_content_line_from_1_suggestion() throws IOException {
+        List<Suggestion> oneSuggestion = oneSuggestion();
+
+        csvPresenter.exportSuggestions(oneSuggestion);
+
         Path outputFile = Paths.get(EXPECTED_OUTPUT_FILE_NAME);
         List<String> outputFileContents = Files.readAllLines(outputFile);
 
@@ -70,11 +80,11 @@ public class CsvPresenterImplShould {
     }
 
     @Test
-    public void create_a_csv_with_4_content_lines_from_a_response_with_4_entries() throws IOException {
-        List<Suggestion> suggestions = fourSuggestions();
-        when(exportSuggestionsToCsv.fetch(CITY)).thenReturn(suggestions);
+    public void generate_a_csv_with_4_content_lines_from_a_response_from_4_suggestions() throws IOException {
+        List<Suggestion> fourSuggestions = fourSuggestions();
 
-        csvPresenter.createCSVFileWithSuggestionsFromAPI(CITY);
+        csvPresenter.exportSuggestions(fourSuggestions);
+
         Path outputFile = Paths.get(EXPECTED_OUTPUT_FILE_NAME);
         List<String> outputFileContents = Files.readAllLines(outputFile);
 

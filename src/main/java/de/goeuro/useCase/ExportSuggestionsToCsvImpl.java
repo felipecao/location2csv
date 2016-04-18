@@ -1,26 +1,40 @@
 package de.goeuro.useCase;
 
+import de.goeuro.ExportSuggestionsToCsv;
 import de.goeuro.entity.Suggestion;
-import de.goeuro.presenter.ExportSuggestionsToCsv;
+import de.goeuro.presenter.CsvPresenter;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import static org.apache.commons.lang3.StringUtils.isBlank;
 
 public class ExportSuggestionsToCsvImpl implements ExportSuggestionsToCsv {
 
-    GoEuroGateway gateway;
+    private GoEuroGateway gateway;
+    private CsvPresenter csvPresenter;
+    private InputHandler inputHandler;
 
-    public ExportSuggestionsToCsvImpl(GoEuroGateway gateway) {
+    public ExportSuggestionsToCsvImpl(GoEuroGateway gateway, CsvPresenter csvPresenter, InputHandler inputHandler) {
         this.gateway = gateway;
+        this.csvPresenter = csvPresenter;
+        this.inputHandler = inputHandler;
     }
 
     @Override
-    public List<Suggestion> fetch(String city) {
-        if(isBlank(city)) {
-            return new ArrayList<>();
+    public void execute() {
+
+        if (!inputHandler.isInputValid()) {
+            inputHandler.presentInputNotProvidedMessage();
+            return;
         }
-        return gateway.retrieveSuggestionsForCity(city);
+
+        String city = inputHandler.extractCity();
+        List<Suggestion> suggestions = gateway.retrieveSuggestionsForCity(city);
+
+        if(suggestions.isEmpty()) {
+            inputHandler.presentNoResultsMessage();
+            return;
+        }
+
+        csvPresenter.exportSuggestions(suggestions);
+        inputHandler.presentSuccessMessage();
     }
 }

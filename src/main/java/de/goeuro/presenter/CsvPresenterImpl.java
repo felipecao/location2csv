@@ -14,44 +14,36 @@ public class CsvPresenterImpl implements CsvPresenter {
     private static final String NEW_LINE = "\n";
     private static final List<String> CSV_HEADERS = Arrays.asList("_id", "name", "type", "latitude", "longitude");
 
-    private ExportSuggestionsToCsv suggestionsForCity;
     private String outputFileName;
+    private StringBuilder contents;
 
-    public CsvPresenterImpl(ExportSuggestionsToCsv suggestionsForCity, String outputFileName) {
-        this.suggestionsForCity = suggestionsForCity;
+    public CsvPresenterImpl(String outputFileName) {
         this.outputFileName = outputFileName;
+        this.contents = new StringBuilder();
     }
 
     @Override
-    public void createCSVFileWithSuggestionsFromAPI(String city) {
-        List<Suggestion> suggestionsFromAPI = retrieveSuggestionsFromAPI(city);
-        createCSVFileFromSuggestions(suggestionsFromAPI);
-    }
-
-    private List<Suggestion> retrieveSuggestionsFromAPI(String city) {
-        return suggestionsForCity.fetch(city);
+    public void exportSuggestions(List<Suggestion> suggestions) {
+        if(null == suggestions || suggestions.isEmpty()) {
+            return;
+        }
+        createCSVFileFromSuggestions(suggestions);
     }
 
     private void createCSVFileFromSuggestions(List<Suggestion> suggestions) {
-        if (null == suggestions || suggestions.isEmpty()) {
-            throw new NoSuggestionsException();
-        }
-
-        StringBuilder contents = new StringBuilder();
-
-        addHeadersToContents(contents);
-        addSuggestionsToContents(suggestions, contents);
-        writeContentsToOutputFile(contents);
+        addHeaders();
+        addSuggestions(suggestions);
+        writeContentsToOutputFile();
     }
 
-    private void addHeadersToContents(StringBuilder contents){
+    private void addHeaders(){
         CSV_HEADERS.stream().forEach( h ->
             contents.append(h).append(SEPARATOR)
         );
         contents.append(NEW_LINE);
     }
 
-    private void addSuggestionsToContents(List<Suggestion> suggestions, StringBuilder contents) {
+    private void addSuggestions(List<Suggestion> suggestions) {
         suggestions.stream().forEach( s ->
             contents.append(s.getId()).append(SEPARATOR)
                     .append(s.getName()).append(SEPARATOR)
@@ -62,7 +54,7 @@ public class CsvPresenterImpl implements CsvPresenter {
         );
     }
 
-    private void writeContentsToOutputFile(StringBuilder contents) {
+    private void writeContentsToOutputFile() {
         PrintWriter writer = createPrintWriter();
         writer.write(contents.toString());
         writer.close();

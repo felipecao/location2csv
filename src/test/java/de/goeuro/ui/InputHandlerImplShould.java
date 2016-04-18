@@ -3,17 +3,12 @@ package de.goeuro.ui;
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import de.goeuro.presenter.CsvPresenter;
-import de.goeuro.presenter.NoSuggestionsException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 
 import java.io.PrintStream;
 
-import static de.goeuro.TestConstants.CITY;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -21,11 +16,11 @@ import static org.mockito.Mockito.*;
 @RunWith(DataProviderRunner.class)
 public class InputHandlerImplShould {
 
-    CsvPresenter csvPresenterMock;
-    PrintStream printStreamMock;
-    InputHandlerImpl inputHandler;
-
-    String[] args;
+    private CsvPresenter csvPresenterMock;
+    private PrintStream printStreamMock;
+    private InputHandlerImpl inputHandler;
+    private String[] args;
+    private String outputFileName = "output.csv";
 
     @Before
     public void setup() {
@@ -36,7 +31,7 @@ public class InputHandlerImplShould {
 
     @Test
     public void warn_if_user_provided_no_input() {
-        inputHandler = new InputHandlerImpl(args, printStreamMock);
+        inputHandler = new InputHandlerImpl(args, printStreamMock, outputFileName);
         assertFalse(inputHandler.isInputValid());
     }
 
@@ -47,7 +42,7 @@ public class InputHandlerImplShould {
     })
     public void warn_if_user_provided_blank_city(final String input) {
         args = new String[]{input};
-        inputHandler = new InputHandlerImpl(args, printStreamMock);
+        inputHandler = new InputHandlerImpl(args, printStreamMock, outputFileName);
         assertFalse(inputHandler.isInputValid());
     }
 
@@ -59,27 +54,27 @@ public class InputHandlerImplShould {
     })
     public void define_input_as_valid_if_a_string_is_provided(final String input) {
         args = new String[]{input};
-        inputHandler = new InputHandlerImpl(args, printStreamMock);
+        inputHandler = new InputHandlerImpl(args, printStreamMock, outputFileName);
         assertTrue(inputHandler.isInputValid());
     }
 
     @Test
     public void output_the_expected_error_message() {
-        inputHandler = new InputHandlerImpl(args, printStreamMock);
-        inputHandler.presentErrorMessage();
+        inputHandler = new InputHandlerImpl(args, printStreamMock, outputFileName);
+        inputHandler.presentInputNotProvidedMessage();
         verify(printStreamMock, times(1)).println(CommandLineOutputMessages.CITY_NOT_PROVIDED_BY_USER);
     }
 
     @Test
     public void output_the_expected_success_message() {
-        inputHandler = new InputHandlerImpl(args, printStreamMock);
+        inputHandler = new InputHandlerImpl(args, printStreamMock, outputFileName);
         inputHandler.presentSuccessMessage();
-        verify(printStreamMock, times(1)).println(CommandLineOutputMessages.SEARCH_FOUND_RESULTS);
+        verify(printStreamMock, times(1)).println(String.format(CommandLineOutputMessages.SEARCH_FOUND_RESULTS_PATTERN, outputFileName));
     }
 
     @Test
     public void output_the_expected_no_results_message() {
-        inputHandler = new InputHandlerImpl(args, printStreamMock);
+        inputHandler = new InputHandlerImpl(args, printStreamMock, outputFileName);
         inputHandler.presentNoResultsMessage();
         verify(printStreamMock, times(1)).println(CommandLineOutputMessages.SEARCH_DID_NOT_FIND_ANY_RESULTS);
     }
@@ -94,7 +89,7 @@ public class InputHandlerImplShould {
     })
     public void extract_the_city_from_input(final String input) {
         args = new String[]{input};
-        inputHandler = new InputHandlerImpl(args, printStreamMock);
+        inputHandler = new InputHandlerImpl(args, printStreamMock, outputFileName);
         String city = inputHandler.extractCity();
 
         if(isNotBlank(input)) {
@@ -105,41 +100,4 @@ public class InputHandlerImplShould {
         }
     }
 
-    @Test
-    public void present_an_error_message_if_args_is_empty() {
-        inputHandler = new InputHandlerImpl(csvPresenterMock, printStreamMock);
-        inputHandler.fireCsvCreation(new String[]{});
-
-        verify(printStreamMock, times(1)).println(CommandLineOutputMessages.CITY_NOT_PROVIDED_BY_USER);
-    }
-
-    @Test
-    @DataProvider({
-            "null",
-            "     ",
-    })
-    public void present_an_error_message_if_city_is_not_provided(String city) {
-        inputHandler = new InputHandlerImpl(csvPresenterMock, printStreamMock);
-        inputHandler.fireCsvCreation(new String[]{city});
-
-        verify(printStreamMock, times(1)).println(CommandLineOutputMessages.CITY_NOT_PROVIDED_BY_USER);
-    }
-
-    @Test
-    public void present_an_error_message_if_no_search_results_were_found() {
-        doThrow(NoSuggestionsException.class).when(csvPresenterMock).createCSVFileWithSuggestionsFromAPI(CITY);
-
-        inputHandler = new InputHandlerImpl(csvPresenterMock, printStreamMock);
-        inputHandler.fireCsvCreation(new String[]{CITY});
-
-        verify(printStreamMock, times(1)).println(CommandLineOutputMessages.SEARCH_DID_NOT_FIND_ANY_RESULTS);
-    }
-
-    @Test
-    public void present_a_success_message_if_search_was_successful() {
-        inputHandler = new InputHandlerImpl(csvPresenterMock, printStreamMock);
-        inputHandler.fireCsvCreation(new String[]{CITY});
-
-        verify(printStreamMock, times(1)).println(CommandLineOutputMessages.SEARCH_FOUND_RESULTS);
-    }
 }

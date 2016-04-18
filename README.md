@@ -33,3 +33,24 @@ and output results to a CSV file. My initial intention was to use (Cucumber)[htt
 with is setup for Java 8 for a couple of hours, I decided to move on and stick to good old JUnit.
 
 Hope I've been able to convey basic information about my solution well enough, and hope you like it! :)
+
+## Acceptance tests
+
+### Scenario: User provides a valid city
+Given GoEuro API has results for "Berlin"
+When user provides "Berlin" as input
+Then a CSV file is generated
+And this CSV file has 8 entries
+And all of the entries have "Berlin" contained in their names
+And a message is presented saying the CSV file has been successfully generated
+
+### Scenario: User provides an input that produces no results
+Given GoEuro API has no results for "Jaboticaba"
+When user provides "Jaboticaba" as input
+Then a message is presented informing that no results were found
+And no CSV file is generated
+
+### Scenario: User provides no input
+When user provides no input
+Then a message is presented informing that input is invalid
+And no CSV file is generated
