@@ -21,7 +21,7 @@ public class ExportSuggestionsToCsvImpl implements ExportSuggestionsToCsv {
     @Override
     public void execute() {
 
-        if (!inputHandler.isInputValid()) {
+        if (!inputHandler.isInputValid()) { // TODO this validation should be done by a separate object
             inputHandler.presentInputNotProvidedMessage();
             return;
         }
