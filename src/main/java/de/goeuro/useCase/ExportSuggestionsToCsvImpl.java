@@ -11,18 +11,21 @@ public class ExportSuggestionsToCsvImpl implements ExportSuggestionsToCsv {
     private GoEuroGateway gateway;
     private CsvPresenter csvPresenter;
     private InputHandler inputHandler;
+    private UserNotifier userNotifier;
 
-    public ExportSuggestionsToCsvImpl(GoEuroGateway gateway, CsvPresenter csvPresenter, InputHandler inputHandler) {
+    public ExportSuggestionsToCsvImpl(GoEuroGateway gateway, CsvPresenter csvPresenter, InputHandler inputHandler,
+                                      UserNotifier userNotifier) {
         this.gateway = gateway;
         this.csvPresenter = csvPresenter;
         this.inputHandler = inputHandler;
+        this.userNotifier = userNotifier;
     }
 
     @Override
     public void execute() {
 
-        if (!inputHandler.isInputValid()) { // TODO this validation should be done by a separate object
-            inputHandler.presentInputNotProvidedMessage();
+        if (!inputHandler.hasUserProvidedInput()) {
+            userNotifier.notifyInputNotProvided();
             return;
         }
 
@@ -30,11 +33,11 @@ public class ExportSuggestionsToCsvImpl implements ExportSuggestionsToCsv {
         List<Suggestion> suggestions = gateway.retrieveSuggestionsForCity(city);
 
         if(suggestions.isEmpty()) {
-            inputHandler.presentNoResultsMessage();
+            userNotifier.notifyNoResults();
             return;
         }
 
         csvPresenter.exportSuggestions(suggestions);
-        inputHandler.presentSuccessMessage();
+        userNotifier.notifySuccess();
     }
 }

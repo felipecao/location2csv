@@ -5,10 +5,12 @@ import de.goeuro.connection.GoEuroGatewayImpl;
 import de.goeuro.connection.HttpConnectionImpl;
 import de.goeuro.presenter.CsvPresenter;
 import de.goeuro.presenter.CsvPresenterImpl;
-import de.goeuro.ui.InputHandlerImpl;
+import de.goeuro.ui.CommandLineInputHandler;
+import de.goeuro.ui.ConsoleUserNotifier;
 import de.goeuro.useCase.ExportSuggestionsToCsvImpl;
 import de.goeuro.useCase.GoEuroGateway;
 import de.goeuro.useCase.InputHandler;
+import de.goeuro.useCase.UserNotifier;
 
 import java.io.PrintStream;
 
@@ -19,6 +21,7 @@ public class Main {
     private ExportSuggestionsToCsv useCase;
     private InputHandler inputHandler;
     private CsvPresenter csvPresenter;
+    private UserNotifier userNotifier;
     private GoEuroGateway gateway;
 
     public static void main(String[] args) {
@@ -34,14 +37,15 @@ public class Main {
     }
 
     private void setupDependencies(String[] args, PrintStream out) {
-        setupInputHandlerDependencies(args, out);
+        setupInputHandlerDependencies(args);
         setupGateway();
         setupCsvPresenter();
+        setupNotifier(out);
         setupUseCase();
     }
 
-    private void setupInputHandlerDependencies(String[] args, PrintStream out) {
-        inputHandler = new InputHandlerImpl(args, out, OUTPUT_FILE_NAME);
+    private void setupInputHandlerDependencies(String[] args) {
+        inputHandler = new CommandLineInputHandler(args);
     }
 
     private void setupGateway() {
@@ -56,8 +60,12 @@ public class Main {
         csvPresenter = new CsvPresenterImpl(OUTPUT_FILE_NAME);
     }
 
+    private void setupNotifier(PrintStream out) {
+        userNotifier = new ConsoleUserNotifier(out, OUTPUT_FILE_NAME);
+    }
+
     private void setupUseCase() {
-        useCase = new ExportSuggestionsToCsvImpl(gateway, csvPresenter, inputHandler);
+        useCase = new ExportSuggestionsToCsvImpl(gateway, csvPresenter, inputHandler, userNotifier);
     }
 
     private void executeUseCase() {

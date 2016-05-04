@@ -58,7 +58,6 @@ public class TheSolutionShould {
         assertTrue(outputFileContents.contains("314826,Berlin Tegel,airport,52.5548,13.28903,"));
         assertTrue(outputFileContents.contains("314827,Berlin Schönefeld,airport,52.3887261,13.5180874,"));
         assertTrue(outputFileContents.contains("334196,Berlin Hbf,station,52.525589,13.369548,"));
-        assertTrue(outputFileContents.contains("334098,Berlin Spandau,station,52.53447,13.19753,"));
 
         verify(printStreamMock, times(1)).println(
                 String.format(CommandLineOutputMessages.SEARCH_FOUND_RESULTS_PATTERN, Main.OUTPUT_FILE_NAME)

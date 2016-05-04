@@ -28,6 +28,9 @@ public class ExportSuggestionsToCsvImplShould {
     @Mock
     private InputHandler inputHandler;
 
+    @Mock
+    private UserNotifier userNotifier;
+
     @InjectMocks
     private ExportSuggestionsToCsvImpl useCase;
 
@@ -36,16 +39,16 @@ public class ExportSuggestionsToCsvImplShould {
         List<Suggestion> oneSuggestion = oneSuggestion();
 
         when(inputHandler.extractCity()).thenReturn(BERLIN);
-        when(inputHandler.isInputValid()).thenReturn(Boolean.TRUE);
+        when(inputHandler.hasUserProvidedInput()).thenReturn(Boolean.TRUE);
         when(gateway.retrieveSuggestionsForCity(BERLIN)).thenReturn(oneSuggestion);
 
         useCase.execute();
 
         verify(csvPresenter, times(1)).exportSuggestions(oneSuggestion);
         verify(inputHandler, times(1)).extractCity();
-        verify(inputHandler, times(1)).presentSuccessMessage();
-        verify(inputHandler, never()).presentNoResultsMessage();
-        verify(inputHandler, never()).presentInputNotProvidedMessage();
+        verify(userNotifier, times(1)).notifySuccess();
+        verify(userNotifier, never()).notifyNoResults();
+        verify(userNotifier, never()).notifyInputNotProvided();
     }
 
     @Test
@@ -53,16 +56,16 @@ public class ExportSuggestionsToCsvImplShould {
         List<Suggestion> fourSuggestions = fourSuggestions();
 
         when(inputHandler.extractCity()).thenReturn(BERLIN);
-        when(inputHandler.isInputValid()).thenReturn(Boolean.TRUE);
+        when(inputHandler.hasUserProvidedInput()).thenReturn(Boolean.TRUE);
         when(gateway.retrieveSuggestionsForCity(BERLIN)).thenReturn(fourSuggestions);
 
         useCase.execute();
 
         verify(csvPresenter, times(1)).exportSuggestions(fourSuggestions);
         verify(inputHandler, times(1)).extractCity();
-        verify(inputHandler, times(1)).presentSuccessMessage();
-        verify(inputHandler, never()).presentNoResultsMessage();
-        verify(inputHandler, never()).presentInputNotProvidedMessage();
+        verify(userNotifier, times(1)).notifySuccess();
+        verify(userNotifier, never()).notifyNoResults();
+        verify(userNotifier, never()).notifyInputNotProvided();
     }
 
     @Test
@@ -70,32 +73,32 @@ public class ExportSuggestionsToCsvImplShould {
         List<Suggestion> noResults = new ArrayList<>();
 
         when(inputHandler.extractCity()).thenReturn(BERLIN);
-        when(inputHandler.isInputValid()).thenReturn(Boolean.TRUE);
+        when(inputHandler.hasUserProvidedInput()).thenReturn(Boolean.TRUE);
         when(gateway.retrieveSuggestionsForCity(BERLIN)).thenReturn(noResults);
 
         useCase.execute();
 
         verify(csvPresenter, never()).exportSuggestions(anyList());
         verify(inputHandler, times(1)).extractCity();
-        verify(inputHandler, times(1)).presentNoResultsMessage();
-        verify(inputHandler, never()).presentSuccessMessage();
-        verify(inputHandler, never()).presentInputNotProvidedMessage();
+        verify(userNotifier, times(1)).notifyNoResults();
+        verify(userNotifier, never()).notifySuccess();
+        verify(userNotifier, never()).notifyInputNotProvided();
     }
 
     @Test
     public void present_an_error_message_if_input_is_invalid() {
         List<Suggestion> noResults = new ArrayList<>();
 
-        when(inputHandler.isInputValid()).thenReturn(Boolean.FALSE);
+        when(inputHandler.hasUserProvidedInput()).thenReturn(Boolean.FALSE);
         when(gateway.retrieveSuggestionsForCity(BERLIN)).thenReturn(noResults);
 
         useCase.execute();
 
         verify(csvPresenter, never()).exportSuggestions(anyList());
         verify(inputHandler, never()).extractCity();
-        verify(inputHandler, never()).presentNoResultsMessage();
-        verify(inputHandler, never()).presentSuccessMessage();
-        verify(inputHandler, times(1)).presentInputNotProvidedMessage();
+        verify(userNotifier, never()).notifyNoResults();
+        verify(userNotifier, never()).notifySuccess();
+        verify(userNotifier, times(1)).notifyInputNotProvided();
     }
 
     private List<Suggestion> oneSuggestion() {
