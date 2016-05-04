@@ -10,26 +10,26 @@ public class ExportSuggestionsToCsvImpl implements ExportSuggestionsToCsv {
 
     private GoEuroGateway gateway;
     private CsvPresenter csvPresenter;
-    private InputHandler inputHandler;
+    private UserInput userInput;
     private UserNotifier userNotifier;
 
-    public ExportSuggestionsToCsvImpl(GoEuroGateway gateway, CsvPresenter csvPresenter, InputHandler inputHandler,
+    public ExportSuggestionsToCsvImpl(GoEuroGateway gateway, CsvPresenter csvPresenter, UserInput userInput,
                                       UserNotifier userNotifier) {
         this.gateway = gateway;
         this.csvPresenter = csvPresenter;
-        this.inputHandler = inputHandler;
+        this.userInput = userInput;
         this.userNotifier = userNotifier;
     }
 
     @Override
     public void execute() {
 
-        if (!inputHandler.hasUserProvidedInput()) {
+        if (!userInput.isPresent()) {
             userNotifier.notifyInputNotProvided();
             return;
         }
 
-        String city = inputHandler.extractCity();
+        String city = userInput.get();
         List<Suggestion> suggestions = gateway.retrieveSuggestionsForCity(city);
 
         if(suggestions.isEmpty()) {

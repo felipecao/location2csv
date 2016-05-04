@@ -18,7 +18,7 @@ public class CommandLineInputHandlerShould {
 
     private CsvPresenter csvPresenterMock;
     private PrintStream printStreamMock;
-    private CommandLineInputHandler inputHandler;
+    private CommandLineUserInput inputHandler;
     private String[] args;
     private String outputFileName = "output.csv";
 
@@ -31,8 +31,8 @@ public class CommandLineInputHandlerShould {
 
     @Test
     public void warn_if_user_provided_no_input() {
-        inputHandler = new CommandLineInputHandler(args);
-        assertFalse(inputHandler.hasUserProvidedInput());
+        inputHandler = new CommandLineUserInput(args);
+        assertFalse(inputHandler.isPresent());
     }
 
     @Test
@@ -42,8 +42,8 @@ public class CommandLineInputHandlerShould {
     })
     public void warn_if_user_provided_blank_city(final String input) {
         args = new String[]{input};
-        inputHandler = new CommandLineInputHandler(args);
-        assertFalse(inputHandler.hasUserProvidedInput());
+        inputHandler = new CommandLineUserInput(args);
+        assertFalse(inputHandler.isPresent());
     }
 
     @Test
@@ -54,8 +54,8 @@ public class CommandLineInputHandlerShould {
     })
     public void define_input_as_valid_if_a_string_is_provided(final String input) {
         args = new String[]{input};
-        inputHandler = new CommandLineInputHandler(args);
-        assertTrue(inputHandler.hasUserProvidedInput());
+        inputHandler = new CommandLineUserInput(args);
+        assertTrue(inputHandler.isPresent());
     }
 
     @Test
@@ -68,8 +68,8 @@ public class CommandLineInputHandlerShould {
     })
     public void extract_the_city_from_input(final String input) {
         args = new String[]{input};
-        inputHandler = new CommandLineInputHandler(args);
-        String city = inputHandler.extractCity();
+        inputHandler = new CommandLineUserInput(args);
+        String city = inputHandler.get();
 
         if(isNotBlank(input)) {
             assertEquals(city, input);

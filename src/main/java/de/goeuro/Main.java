@@ -5,11 +5,11 @@ import de.goeuro.connection.GoEuroGatewayImpl;
 import de.goeuro.connection.HttpConnectionImpl;
 import de.goeuro.presenter.CsvPresenter;
 import de.goeuro.presenter.CsvPresenterImpl;
-import de.goeuro.ui.CommandLineInputHandler;
+import de.goeuro.ui.CommandLineUserInput;
 import de.goeuro.ui.ConsoleUserNotifier;
 import de.goeuro.useCase.ExportSuggestionsToCsvImpl;
 import de.goeuro.useCase.GoEuroGateway;
-import de.goeuro.useCase.InputHandler;
+import de.goeuro.useCase.UserInput;
 import de.goeuro.useCase.UserNotifier;
 
 import java.io.PrintStream;
@@ -19,7 +19,7 @@ public class Main {
     public static final String OUTPUT_FILE_NAME = "suggestions.csv";
 
     private ExportSuggestionsToCsv useCase;
-    private InputHandler inputHandler;
+    private UserInput userInput;
     private CsvPresenter csvPresenter;
     private UserNotifier userNotifier;
     private GoEuroGateway gateway;
@@ -45,7 +45,7 @@ public class Main {
     }
 
     private void setupInputHandlerDependencies(String[] args) {
-        inputHandler = new CommandLineInputHandler(args);
+        userInput = new CommandLineUserInput(args);
     }
 
     private void setupGateway() {
@@ -65,7 +65,7 @@ public class Main {
     }
 
     private void setupUseCase() {
-        useCase = new ExportSuggestionsToCsvImpl(gateway, csvPresenter, inputHandler, userNotifier);
+        useCase = new ExportSuggestionsToCsvImpl(gateway, csvPresenter, userInput, userNotifier);
     }
 
     private void executeUseCase() {

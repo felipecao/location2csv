@@ -1,25 +1,25 @@
 package de.goeuro.ui;
 
-import de.goeuro.useCase.InputHandler;
+import de.goeuro.useCase.UserInput;
 
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
-public class CommandLineInputHandler implements InputHandler {
+public class CommandLineUserInput implements UserInput {
 
     private String[] args;
 
-    public CommandLineInputHandler(String[] args) {
+    public CommandLineUserInput(String[] args) {
         this.args = args;
     }
 
     @Override
-    public Boolean hasUserProvidedInput() {
+    public Boolean isPresent() {
         return (args.length > 0) && (isNotBlank(args[0]));
     }
 
     @Override
-    public String extractCity() {
-        if (!hasUserProvidedInput()) { {
+    public String get() {
+        if (!isPresent()) { {
             return null;
         }}
 
