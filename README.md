@@ -1,4 +1,5 @@
 # location2csv
+[![Build Status](https://api.travis-ci.org/felipecao/location2csv.svg)](https://travis-ci.org/felipecao/location2csv)
 
 This is an implementation to the coding challenge proposed on https://github.com/goeuro/dev-test. As per the challenge description, this 
 project should make a HTTP call to GoEuro API and output results to a CSV file.
